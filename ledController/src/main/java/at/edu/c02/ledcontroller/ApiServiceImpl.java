@@ -78,7 +78,7 @@ public class ApiServiceImpl implements ApiService {
         return callAPI(url);
     }
 
-    public JSONObject setLight(int id, String color, boolean state) throws IOException{
+    public void setLight(int id, String color, boolean state) throws IOException{
         // Connect to the server
         URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/setLight");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -113,12 +113,13 @@ public class ApiServiceImpl implements ApiService {
 
     }
 
-    private String loadSecretFromFile() {
+    public String loadSecretFromFile() {
         String secret="";
         try{
-            BufferedReader br= new BufferedReader(new FileReader("secret.txt"));
-            secret = br.readLine();
+            String path = new File("secret.txt").getAbsolutePath();
 
+            BufferedReader br= new BufferedReader(new FileReader(path));
+            secret = br.readLine();
         }
         catch (FileNotFoundException e) {
             System.out.println("Error loading secret");
