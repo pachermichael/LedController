@@ -19,11 +19,19 @@ public class Main {
             System.out.println("Enter 'demo' to send a demo request");
             System.out.println("Enter 'exit' to exit the program");
             input = reader.readLine();
-            if(input.equalsIgnoreCase("demo"))
-            {
-                ledController.demo();
-                System.out.println(ledController.getGroupLeds().toString());
-            }
+
+
+            switch (input.toLowerCase()){
+                case "demo": ledController.demo();break;
+                case "groupstatus": ledController.getGroupStatus();break;
+                case "status":{
+                    System.out.println("Plese specify light ID:");
+                    input = reader.readLine();
+                    ledController.getLightStatus(Integer.parseInt(input));
+                }
+                case "exit": break;
+                default:
+                    System.out.println("Command doesn't exist.");
         }
     }
 }
