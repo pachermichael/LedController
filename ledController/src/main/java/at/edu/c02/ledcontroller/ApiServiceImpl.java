@@ -55,8 +55,7 @@ public class ApiServiceImpl implements ApiService {
         return new JSONObject(jsonText);
     }
 
-
-    public JSONObject setLight() throws IOException{
+    public JSONObject setLight(int id, String color, boolean state) throws IOException{
         // Connect to the server
         URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/setLight");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -69,9 +68,9 @@ public class ApiServiceImpl implements ApiService {
         connection.setDoOutput(true);
         String jsonInputString =
                 "{"
-                        + "      \"id\": 12,"
-                        + "      \"color\": \"#FF0000\","
-                        + "      \"state\" : true"
+                        + "      \"id\": " + id +  " ,"
+                        + "      \"color\": \" "+ color +" \","
+                        + "      \"state\" : "+ state
                         + "}";
 
         try(OutputStream os = connection.getOutputStream()) {
