@@ -14,5 +14,6 @@ Daily Scrum meeting
 --Story 2.5; 30 Min; Michi (Flo)
 Sprint Retrospektive
 --Story 2.5 wurde nicht abgeschlossen, wegen Zeitmanagement --> nächster Sprint
+--Alle anderen wurden abgeschlossen
 --Probleme mit IDE
 --Beim nächsten Sprint besser die Zeit schätzen und nicht zu viele Punkte abarbeiten.

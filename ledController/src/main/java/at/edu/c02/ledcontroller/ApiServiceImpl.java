@@ -38,9 +38,12 @@ public class ApiServiceImpl implements ApiService {
         return getJsonObject().getJSONArray("lights").getJSONObject(id);
     }
 
-    private JSONObject getJsonObject() throws IOException {
-        // Connect to the server
-        URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/getLights");
+    @Override
+    public JSONObject deleteLight(int id) throws IOException {
+        URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/lights/"+id);
+        return callAPI(url);
+    }
+    private JSONObject callAPI(URL url) throws IOException{
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         // and send a GET request
         connection.setRequestMethod("GET");
@@ -66,6 +69,12 @@ public class ApiServiceImpl implements ApiService {
         String jsonText = sb.toString();
         // Convert response into a json object
         return new JSONObject(jsonText);
+    }
+
+    private JSONObject getJsonObject() throws IOException {
+        // Connect to the server
+        URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/getLights");
+        return callAPI(url);
     }
 
     public JSONObject setLight(int id, String color, boolean state) throws IOException{
