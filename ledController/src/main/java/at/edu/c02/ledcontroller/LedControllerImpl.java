@@ -109,14 +109,7 @@ public class LedControllerImpl implements LedController {
             }
         });
         return filteredLights;
-
-        for (int i = 0; i < lights.length(); i++) {
-
-            ledstatus.add(lights.getJSONObject(i).getBoolean("on"));
-        }
-        return ledstatus;
     }
-
     public void turnOffAllLeds() throws IOException {
 
         JSONObject response = apiService.getLights();
