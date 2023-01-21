@@ -32,7 +32,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public JSONObject getLights(int id) throws IOException
     {
-        return getJsonObject().getJSONArray("lights").getJSONObject(id);
+        return getJsonObject().getJSONArray("light").getJSONObject(id);
     }
 
     private JSONObject getJsonObject() throws IOException {

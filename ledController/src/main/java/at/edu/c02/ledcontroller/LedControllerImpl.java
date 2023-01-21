@@ -21,12 +21,20 @@ public class LedControllerImpl implements LedController {
     {
         // Call `getLights`, the response is a json object in the form `{ "lights": [ { ... }, { ... } ] }`
         JSONObject response = apiService.getLights();
+
         // get the "lights" array from the response
         JSONArray lights = response.getJSONArray("lights");
         // read the first json object of the lights array
         JSONObject firstLight = lights.getJSONObject(0);
+
+        JSONObject lightById= apiService.getLights(13);
+
         // read int and string properties of the light
         System.out.println("First light id is: " + firstLight.getInt("id"));
         System.out.println("First light color is: " + firstLight.getString("color"));
+
+        System.out.println("First light id is: " + lightById.getInt("id"));
+        System.out.println("First light color is: " + lightById.getString("color"));
     }
+
 }
