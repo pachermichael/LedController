@@ -47,9 +47,7 @@ public class ApiServiceImpl implements ApiService {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         // and send a GET request
         connection.setRequestMethod("GET");
-
         connection.setRequestProperty("X-Hasura-Group-ID", _secret);
-
         // Read the response code
         int responseCode = connection.getResponseCode();
         if(responseCode != HttpURLConnection.HTTP_OK) {
@@ -72,6 +70,7 @@ public class ApiServiceImpl implements ApiService {
         // Convert response into a json object
         return new JSONObject(jsonText);
     }
+
 
     private JSONObject getJsonObject() throws IOException {
         // Connect to the server
@@ -112,7 +111,6 @@ public class ApiServiceImpl implements ApiService {
             System.out.println(response.toString());
         }
 
-        return null;
     }
 
     private String loadSecretFromFile() {
