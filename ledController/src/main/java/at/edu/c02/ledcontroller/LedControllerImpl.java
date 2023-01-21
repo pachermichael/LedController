@@ -25,6 +25,14 @@ public class LedControllerImpl implements LedController {
     @Override
     public void demo() throws IOException
     {
+
+
+        System.out.println(getGroupLeds().toString());
+        turnOffAllLeds();
+        System.out.println(getGroupLeds().toString());
+
+
+        System.out.println(groupIds().toString());
         // Call `getLights`, the response is a json object in the form `{ "lights": [ { ... }, { ... } ] }`
         JSONObject response = apiService.getLights();
         // get the "lights" array from the response
@@ -34,7 +42,9 @@ public class LedControllerImpl implements LedController {
         // read int and string properties of the light
         System.out.println("First light id is: " + firstLight.getInt("id"));
         System.out.println("First light color is: " + firstLight.getString("color"));
-    }    @Override
+    }
+
+    @Override
     public void demo2(int id, String color, boolean state) throws IOException
     {
         JSONObject responseSetLight = apiService.setLight(id,color,state);
@@ -66,17 +76,9 @@ public class LedControllerImpl implements LedController {
     public List<Boolean> getGroupLeds() throws IOException {
         List<Boolean> ledstatus = new ArrayList<>();
 
-
-        for (int i = 0; i < groupIds().size(); i++) {
-
-            ledstatus.add(groupIds().get(i).getBoolean("on"));
-
+        for (JSONObject jo:groupIds()) {
+            ledstatus.add(jo.getBoolean("on"));
         }
-
-        List<JSONObject> lights = filterLights(apiService.getLights());
-        lights.forEach(n ->ledstatus.add(n.getBoolean("on")));
-
-
 
         return ledstatus;
     }
@@ -127,9 +129,9 @@ public class LedControllerImpl implements LedController {
 
     public void turnOffAllLeds() throws IOException {
 
-        for (int i = 0; i < groupIds().size(); i++) {
-            if(getGroupLeds().get(i).equals(true)){
-             // lights.getJSONObject(i).getBoolean("on");
+        for (JSONObject jo:groupIds()) {
+            if(jo.getBoolean("on")){
+                apiService.setLight(jo.getInt("id"), "#000",false);
             }
         }
 
