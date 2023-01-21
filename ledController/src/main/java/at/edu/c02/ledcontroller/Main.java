@@ -20,6 +20,7 @@ public class Main {
             System.out.println("Enter 'exit' to exit the program");
             input = reader.readLine();
 
+
             switch (input.toLowerCase()){
                 case "demo": ledController.demo();break;
                 case "groupstatus": ledController.getGroupStatus();break;
@@ -31,8 +32,6 @@ public class Main {
                 case "exit": break;
                 default:
                     System.out.println("Command doesn't exist.");
-                    ledController.getGroupLeds();
-            }
         }
     }
 }
