@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -52,5 +53,42 @@ public class ApiServiceImpl implements ApiService {
         String jsonText = sb.toString();
         // Convert response into a json object
         return new JSONObject(jsonText);
+    }
+
+
+    public JSONObject setLight() throws IOException{
+        // Connect to the server
+        URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/setLight");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        // and send a POST request
+        connection.setRequestMethod("PUT");
+        connection.setRequestProperty("X-Hasura-Group-ID", "3b0c44298fc1c149afbf4c8996fb9");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        connection.setDoOutput(true);
+        String jsonInputString =
+                "{"
+                        + "      \"id\": 12,"
+                        + "      \"color\": \"#FF0000\","
+                        + "      \"state\" : true"
+                        + "}";
+
+        try(OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        try(BufferedReader br = new BufferedReader(
+                new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            System.out.println(response.toString());
+        }
+
+        return null;
     }
 }

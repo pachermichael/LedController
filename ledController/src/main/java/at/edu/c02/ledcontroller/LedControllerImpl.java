@@ -21,6 +21,7 @@ public class LedControllerImpl implements LedController {
     {
         // Call `getLights`, the response is a json object in the form `{ "lights": [ { ... }, { ... } ] }`
         JSONObject response = apiService.getLights();
+        JSONObject responseSetLight = apiService.setLight();
         // get the "lights" array from the response
         JSONArray lights = response.getJSONArray("lights");
         // read the first json object of the lights array
