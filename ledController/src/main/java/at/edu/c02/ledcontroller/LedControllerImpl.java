@@ -40,8 +40,8 @@ public class LedControllerImpl implements LedController {
         JSONObject responseSetLight = apiService.setLight(id,color,state);
     }
 
-    public List<Integer> groupIds() throws IOException {
-        List<Integer> groupIdList = new ArrayList<>();
+    public List<JSONObject> groupIds() throws IOException {
+        List<JSONObject> groupIdList = new ArrayList<>();
 
         JSONObject response = apiService.getLights();
         JSONArray lights = response.getJSONArray("lights");
@@ -55,7 +55,7 @@ public class LedControllerImpl implements LedController {
             groupByGroup = groupObject.getJSONObject("groupByGroup");
 
             if(groupByGroup.getString("name").equals("B")){
-                groupIdList.add(groupObject.getInt("id"));
+                groupIdList.add(groupObject);
             }
         }
 
@@ -66,14 +66,24 @@ public class LedControllerImpl implements LedController {
     public List<Boolean> getGroupLeds() throws IOException {
         List<Boolean> ledstatus = new ArrayList<>();
 
+
+        for (int i = 0; i < groupIds().size(); i++) {
+
+            ledstatus.add(groupIds().get(i).getBoolean("on"));
+
+        }
+
         List<JSONObject> lights = filterLights(apiService.getLights());
         lights.forEach(n ->ledstatus.add(n.getBoolean("on")));
+
 
 
         return ledstatus;
     }
 
     @Override
+
+
     public void getGroupStatus() throws IOException {
         showState(filterLights(apiService.getLights()));
     }
@@ -114,14 +124,12 @@ public class LedControllerImpl implements LedController {
         });
         return filteredLights;
     }
+
     public void turnOffAllLeds() throws IOException {
 
-        JSONObject response = apiService.getLights();
-        JSONArray lights = response.getJSONArray("lights");
-
-        for (int i = 0; i < lights.length(); i++) {
+        for (int i = 0; i < groupIds().size(); i++) {
             if(getGroupLeds().get(i).equals(true)){
-              lights.getJSONObject(i).getBoolean("on");
+             // lights.getJSONObject(i).getBoolean("on");
             }
         }
 
