@@ -10,9 +10,9 @@ public class ApiServiceMock implements ApiService{
         return new JSONObject(
                 "{\"lights\":\n" +
                         "[\n" +
-                        "{\"id\":1,\"color\":\"#000\",\"on\":false,\"groupByGroup\":{\"name\":\"test\"}},\n" +
-                        "{\"id\":2,\"color\":\"#000\",\"on\":true,\"groupByGroup\":{\"name\":\"test\"}},\n" +
-                        "{\"id\":3,\"color\":\"#000\",\"on\":false,\"groupByGroup\":{\"name\":\"test\"}},\n" +
+                        "{\"id\":1,\"color\":\"#000\",\"on\":false,\"groupByGroup\":{\"name\":\"B\"}},\n" +
+                        "{\"id\":2,\"color\":\"#000\",\"on\":true,\"groupByGroup\":{\"name\":\"B\"}},\n" +
+                        "{\"id\":3,\"color\":\"#000\",\"on\":false,\"groupByGroup\":{\"name\":\"B\"}},\n" +
                         "]}"
         );
     }
@@ -25,5 +25,10 @@ public class ApiServiceMock implements ApiService{
     @Override
     public JSONObject getLights(int id) throws IOException {
         return null;
+    }
+
+    @Override
+    public JSONObject getLights(int id) throws IOException {
+        return getLights();
     }
 }
