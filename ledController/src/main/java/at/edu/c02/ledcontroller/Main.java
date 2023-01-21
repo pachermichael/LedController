@@ -33,21 +33,20 @@ public class Main {
                     input = reader.readLine();
                     ledController.getLightStatus(Integer.parseInt(input));
                 }
+                case "setlight":{
+                    System.out.println("=== Set Lights Controller ===");
+                    System.out.println("Enter the LED ID");
+                    String id = reader.readLine();
+                    System.out.println("Enter the color in HEX");
+                    String color = reader.readLine();
+                    System.out.println("Enter true or false, for activate the LED");
+                    String state = reader.readLine();
+                    ledController.demo2(Integer.parseInt(id),color, Boolean.parseBoolean(state));
+                }
                 case "exit":
                     break;
                 default:
                     System.out.println("Command doesn't exist.");
-            }
-            if(input.equalsIgnoreCase("setlight"))
-            {
-                System.out.println("=== Set Lights Controller ===");
-                System.out.println("Enter the LED ID");
-                String id = reader.readLine();
-                System.out.println("Enter the color in HEX");
-                String color = reader.readLine();
-                System.out.println("Enter true or false, for activate the LED");
-                String state = reader.readLine();
-                ledController.demo2(Integer.parseInt(id),color, Boolean.parseBoolean(state));
             }
         }
     }

@@ -2,10 +2,7 @@ package at.edu.c02.ledcontroller;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -15,6 +12,11 @@ import java.net.URL;
  * Do not implement any other logic here - the ApiService will be mocked to unit test the logic without needing a server.
  */
 public class ApiServiceImpl implements ApiService {
+    private static String _secret;
+    public ApiServiceImpl() {
+        _secret =loadSecretFromFile();
+    }
+
     /**
      * This method calls the `GET /getLights` endpoint and returns the response.
      * TODO: When adding additional API calls, refactor this method. Extract/Create at least one private method that
@@ -42,7 +44,10 @@ public class ApiServiceImpl implements ApiService {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         // and send a GET request
         connection.setRequestMethod("GET");
+
         connection.setRequestProperty("X-Hasura-Group-ID", "3b0c44298fc1c149afbf4c8996fb9");
+        connection.setRequestProperty("X-Hasura-Group-ID", _secret);
+
         // Read the response code
         int responseCode = connection.getResponseCode();
         if(responseCode != HttpURLConnection.HTTP_OK) {
@@ -72,7 +77,7 @@ public class ApiServiceImpl implements ApiService {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         // and send a POST request
         connection.setRequestMethod("PUT");
-        connection.setRequestProperty("X-Hasura-Group-ID", "3b0c44298fc1c149afbf4c8996fb9");
+        connection.setRequestProperty("X-Hasura-Group-ID", _secret);
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Accept", "application/json");
 
@@ -100,5 +105,21 @@ public class ApiServiceImpl implements ApiService {
         }
 
         return null;
+    }
+
+    private String loadSecretFromFile() {
+        String secret="";
+        try{
+            BufferedReader br= new BufferedReader(new FileReader("secret.txt"));
+            secret = br.readLine();
+
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Error loading secret");
+        } catch (IOException e) {
+            System.out.println("Error loading secret");
+        }
+        System.out.println(secret);
+        return secret;
     }
 }
