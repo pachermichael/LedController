@@ -42,7 +42,7 @@ public class ApiServiceImpl implements ApiService {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         // and send a GET request
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("3b0c44298fc1c149afbf4c8996fb9", "Todo");
+        connection.setRequestProperty("X-Hasura-Group-ID", "3b0c44298fc1c149afbf4c8996fb9");
         // Read the response code
         int responseCode = connection.getResponseCode();
         if(responseCode != HttpURLConnection.HTTP_OK) {
@@ -66,7 +66,7 @@ public class ApiServiceImpl implements ApiService {
         return new JSONObject(jsonText);
     }
 
-    public JSONObject setLight(int id, String color, boolean state) throws IOException{
+    public void setLight(int id, String color, boolean state) throws IOException{
         // Connect to the server
         URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/setLight");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -99,6 +99,5 @@ public class ApiServiceImpl implements ApiService {
             System.out.println(response.toString());
         }
 
-        return null;
     }
 }

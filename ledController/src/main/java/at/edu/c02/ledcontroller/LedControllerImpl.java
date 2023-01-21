@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,15 +17,13 @@ public class LedControllerImpl implements LedController {
     private final ApiService apiService;
     private final String groupName;
 
-    public LedControllerImpl(ApiService apiService)
-    {
+    public LedControllerImpl(ApiService apiService) {
         this.apiService = apiService;
         groupName = "B";
     }
 
     @Override
-    public void demo() throws IOException
-    {
+    public void demo() throws IOException {
         // Call `getLights`, the response is a json object in the form `{ "lights": [ { ... }, { ... } ] }`
         JSONObject response = apiService.getLights();
         // get the "lights" array from the response
@@ -34,10 +33,12 @@ public class LedControllerImpl implements LedController {
         // read int and string properties of the light
         System.out.println("First light id is: " + firstLight.getInt("id"));
         System.out.println("First light color is: " + firstLight.getString("color"));
-    }    @Override
-    public void demo2(int id, String color, boolean state) throws IOException
-    {
-        JSONObject responseSetLight = apiService.setLight(id,color,state);
+        movingLights();
+    }
+
+    @Override
+    public void demo2(int id, String color, boolean state) throws IOException {
+        apiService.setLight(id, color, state);
     }
 
     public List<JSONObject> groupIds() throws IOException {
@@ -54,7 +55,7 @@ public class LedControllerImpl implements LedController {
             groupObject = lights.getJSONObject(i);
             groupByGroup = groupObject.getJSONObject("groupByGroup");
 
-            if(groupByGroup.getString("name").equals("B")){
+            if (groupByGroup.getString("name").equals("B")) {
                 groupIdList.add(groupObject);
             }
         }
@@ -63,14 +64,58 @@ public class LedControllerImpl implements LedController {
     }
 
     @Override
+    public void movingLights() throws IOException {
+        List<JSONObject> jsonObjects = groupIds();
+        for (JSONObject jsonObject : jsonObjects) {
+            int id = jsonObject.getInt("id");
+            apiService.setLight(id, "#00FFFF", false);
+            System.out.println(jsonObject);
+        }
+        try {
+            int rounds = 0;
+            while (rounds < 1 ) {
+                apiService.setLight(jsonObjects.get(0).getInt("id"), "#00FFFF", true);
+                Thread.sleep(1000);
+                for (int i = 1; i < jsonObjects.size(); i++) {
+                    apiService.setLight(jsonObjects.get(i - 1).getInt("id"), "#00FFFF", false);
+                    if(i==jsonObjects.size()-1) {
+                        apiService.setLight(jsonObjects.get(i).getInt("id"), "#00FFFF", true);
+                        Thread.sleep(1000);
+                        apiService.setLight(jsonObjects.get(i).getInt("id"), "#00FFFF", false);
+                    }
+                    else
+                    {
+                        apiService.setLight(jsonObjects.get(i).getInt("id"), "#00FFFF", true);
+                        Thread.sleep(1000);
+
+                    }
+
+                }
+
+                rounds++;
+            }
+
+            for (JSONObject jsonObject : jsonObjects) {
+                int id = jsonObject.getInt("id");
+                apiService.setLight(id, "#00FFFF", false);
+                System.out.println(jsonObject);
+            }
+
+        } catch (Exception ex) {
+
+        }
+    }
+
+    @Override
     public List<Boolean> getGroupLeds() throws IOException {
         List<Boolean> ledstatus = new ArrayList<>();
 
         for (int i = 0; i < groupIds().size(); i++) {
             ledstatus.add(groupIds().get(i).getBoolean("on"));
+
         }
         List<JSONObject> lights = filterLights(apiService.getLights());
-        lights.forEach(n ->ledstatus.add(n.getBoolean("on")));
+        lights.forEach(n -> ledstatus.add(n.getBoolean("on")));
 
         return ledstatus;
     }
@@ -85,9 +130,9 @@ public class LedControllerImpl implements LedController {
         List<JSONObject> lights = filterLights(apiService.getLights());
         ArrayList<JSONObject> list = new ArrayList();
 
-        for (Object test: lights) {
+        for (Object test : lights) {
             JSONObject light = (JSONObject) test;
-            if(light.getInt("id") == id){
+            if (light.getInt("id") == id) {
                 list.add(light);
                 break;
             }
@@ -95,22 +140,22 @@ public class LedControllerImpl implements LedController {
         showState(list);
     }
 
-    private void showState(Collection<JSONObject> lights){
+    private void showState(Collection<JSONObject> lights) {
         lights.forEach(n -> {
-            JSONObject light = (JSONObject)n;
-            String state = light.getBoolean("on")?"on":"off";
-            String out = String.format("LED %d is currently %s. Color: %s",light.getInt("id"),state,light.getString("color"));
+            JSONObject light = (JSONObject) n;
+            String state = light.getBoolean("on") ? "on" : "off";
+            String out = String.format("LED %d is currently %s. Color: %s", light.getInt("id"), state, light.getString("color"));
             System.out.println(out);
         });
     }
 
-    private List<JSONObject> filterLights(JSONObject response){
+    private List<JSONObject> filterLights(JSONObject response) {
         JSONArray lights = response.getJSONArray("lights");
         List<JSONObject> filteredLights = new ArrayList<>();
 
-        lights.forEach(n ->{
+        lights.forEach(n -> {
             JSONObject light = (JSONObject) n;
-            if(light.getJSONObject("groupByGroup").get("name").equals(groupName)){
+            if (light.getJSONObject("groupByGroup").get("name").equals(groupName)) {
                 filteredLights.add(light);
             }
         });
@@ -120,8 +165,8 @@ public class LedControllerImpl implements LedController {
     public void turnOffAllLeds() throws IOException {
 
         for (int i = 0; i < groupIds().size(); i++) {
-            if(getGroupLeds().get(i).equals(true)){
-             // lights.getJSONObject(i).getBoolean("on");
+            if (getGroupLeds().get(i).equals(true)) {
+                // lights.getJSONObject(i).getBoolean("on");
             }
         }
 

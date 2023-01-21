@@ -13,4 +13,5 @@ public interface LedController {
     void getLightStatus(int id) throws IOException;
     void turnOffAllLeds() throws IOException;
     List<JSONObject> groupIds() throws IOException;
+    void movingLights() throws IOException;
 }
