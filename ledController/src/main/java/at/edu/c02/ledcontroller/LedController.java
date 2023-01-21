@@ -10,7 +10,7 @@ public interface LedController {
     void demo2(int id, String color, boolean state) throws IOException;
     List<Boolean> getGroupLeds() throws IOException;
     void getGroupStatus() throws IOException;
-    void getLightStatus(int id) throws IOException;
+    JSONObject getLightStatus(int id) throws IOException;
     void turnOffAllLeds() throws IOException;
     List<JSONObject> groupIds() throws IOException;
 }
