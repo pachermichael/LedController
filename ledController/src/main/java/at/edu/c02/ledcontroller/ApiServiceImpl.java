@@ -48,7 +48,6 @@ public class ApiServiceImpl implements ApiService {
         // and send a GET request
         connection.setRequestMethod("GET");
 
-        connection.setRequestProperty("X-Hasura-Group-ID", "3b0c44298fc1c149afbf4c8996fb9");
         connection.setRequestProperty("X-Hasura-Group-ID", _secret);
 
         // Read the response code
