@@ -6,5 +6,10 @@ Sprint planing
 Sprint
 
 Daily Scrum meeting
-
+--Story 1.1 Anna (Wu)
+--Story 1.2 Flo (Anna)
+--Story 1.3 Michi (Flo)
 Sprint Retrospektive
+--Story 1.3 wurde nicht abgeschlossen --> nächster Sprint
+--Probleme mit Tests
+--Wu ins Projekt eingeführt
