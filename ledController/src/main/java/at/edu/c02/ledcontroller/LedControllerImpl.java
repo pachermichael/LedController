@@ -81,7 +81,7 @@ public class LedControllerImpl implements LedController {
     }
 
     @Override
-    public void getLightStatus(int id) throws IOException {
+    public JSONObject getLightStatus(int id) throws IOException {
         List<JSONObject> lights = filterLights(apiService.getLights());
         ArrayList<JSONObject> list = new ArrayList();
 
@@ -93,13 +93,13 @@ public class LedControllerImpl implements LedController {
             }
         }
         showState(list);
+        return list.get(0);
     }
 
     private void showState(Collection<JSONObject> lights){
         lights.forEach(n -> {
-            JSONObject light = (JSONObject)n;
-            String state = light.getBoolean("on")?"on":"off";
-            String out = String.format("LED %d is currently %s. Color: %s",light.getInt("id"),state,light.getString("color"));
+            String state = n.getBoolean("on")?"on":"off";
+            String out = String.format("LED %d is currently %s. Color: %s",n.getInt("id"),state,n.getString("color"));
             System.out.println(out);
         });
     }
