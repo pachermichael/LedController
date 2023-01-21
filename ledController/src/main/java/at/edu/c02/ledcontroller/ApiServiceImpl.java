@@ -25,12 +25,23 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public JSONObject getLights() throws IOException
     {
+        return getJsonObject();
+    }
+
+
+    @Override
+    public JSONObject getLights(int id) throws IOException
+    {
+        return getJsonObject().getJSONArray("lights").getJSONObject(id);
+    }
+
+    private JSONObject getJsonObject() throws IOException {
         // Connect to the server
         URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/getLights");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         // and send a GET request
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("3b0c44298fc1c149afbf4c8996fb9", "Todo");
+        connection.setRequestProperty("X-Hasura-Group-ID", "Todo");
         // Read the response code
         int responseCode = connection.getResponseCode();
         if(responseCode != HttpURLConnection.HTTP_OK) {
