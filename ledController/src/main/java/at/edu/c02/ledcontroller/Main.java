@@ -13,16 +13,41 @@ public class Main {
 
         String input = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while(!input.equalsIgnoreCase("exit"))
-        {
+        while (!input.equalsIgnoreCase("exit")) {
             System.out.println("=== LED Controller ===");
             System.out.println("Enter 'demo' to send a demo request");
             System.out.println("Enter 'exit' to exit the program");
+            System.out.println("Enter 'setlight' to exit the program");
             input = reader.readLine();
-            if(input.equalsIgnoreCase("demo"))
+
+
+            switch (input.toLowerCase()) {
+                case "demo":
+                    ledController.demo();
+                    break;
+                case "groupstatus":
+                    ledController.getGroupStatus();
+                    break;
+                case "status": {
+                    System.out.println("Plese specify light ID:");
+                    input = reader.readLine();
+                    ledController.getLightStatus(Integer.parseInt(input));
+                }
+                case "exit":
+                    break;
+                default:
+                    System.out.println("Command doesn't exist.");
+            }
+            if(input.equalsIgnoreCase("setlight"))
             {
-                ledController.demo();
-                System.out.println(ledController.getGroupLeds().toString());
+                System.out.println("=== Set Lights Controller ===");
+                System.out.println("Enter the LED ID");
+                String id = reader.readLine();
+                System.out.println("Enter the color in HEX");
+                String color = reader.readLine();
+                System.out.println("Enter true or false, for activate the LED");
+                String state = reader.readLine();
+                ledController.demo2(Integer.parseInt(id),color, Boolean.parseBoolean(state));
             }
         }
     }
