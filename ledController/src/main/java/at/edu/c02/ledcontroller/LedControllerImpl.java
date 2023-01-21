@@ -66,24 +66,16 @@ public class LedControllerImpl implements LedController {
     public List<Boolean> getGroupLeds() throws IOException {
         List<Boolean> ledstatus = new ArrayList<>();
 
-
         for (int i = 0; i < groupIds().size(); i++) {
-
             ledstatus.add(groupIds().get(i).getBoolean("on"));
-
         }
-
         List<JSONObject> lights = filterLights(apiService.getLights());
         lights.forEach(n ->ledstatus.add(n.getBoolean("on")));
-
-
 
         return ledstatus;
     }
 
     @Override
-
-
     public void getGroupStatus() throws IOException {
         showState(filterLights(apiService.getLights()));
     }
