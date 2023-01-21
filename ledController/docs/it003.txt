@@ -1,0 +1,14 @@
+Sprint planing
+--Story 2.1 Test; 30 Min; Wu (Anna)
+--Story 2.5; 30 Min; Wu (Anna)
+--Story 2.2; 30 Min; Flo (Michi)
+--Story 2.3; 30 Min; Anna (Wu); vom voherigem Sprint übrig
+--Story 3.1; 30 Min; Michi (Flo)
+Sprint
+
+Daily Scrum meeting
+Alle haben noch arbeit und werden zeitlich fertig
+Sprint Retrospektive
+Zeitschätzungen waren besser, als beim letzten Sprint
+Team hat nicht zu viel in den Sprint gepackt.
+Fast alle Aufaben wurden im Sprint erledigt.
